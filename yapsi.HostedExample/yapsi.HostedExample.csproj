@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-yapsi.HostedExample-926C0968-2A14-4E65-B045-A1669B673448</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0-rc.1.21451.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\yapsi\yapsi.csproj" />
+  </ItemGroup>
+</Project>
