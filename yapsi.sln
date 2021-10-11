@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31717.71
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "yapsi", "yapsi\yapsi.csproj", "{C6BC8A87-2A26-4827-878E-4EA238F3DFA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "yapsi.Test", "yapsi.Test\yapsi.Test.csproj", "{EE7A1110-DF29-48DB-B0EF-F95848645AFA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C6BC8A87-2A26-4827-878E-4EA238F3DFA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6BC8A87-2A26-4827-878E-4EA238F3DFA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6BC8A87-2A26-4827-878E-4EA238F3DFA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6BC8A87-2A26-4827-878E-4EA238F3DFA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE7A1110-DF29-48DB-B0EF-F95848645AFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE7A1110-DF29-48DB-B0EF-F95848645AFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE7A1110-DF29-48DB-B0EF-F95848645AFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE7A1110-DF29-48DB-B0EF-F95848645AFA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {81197F17-8E69-47CB-A67F-89362AF68769}
+	EndGlobalSection
+EndGlobal
