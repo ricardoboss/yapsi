@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "yapsi", "yapsi\yapsi.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "yapsi.Test", "yapsi.Test\yapsi.Test.csproj", "{EE7A1110-DF29-48DB-B0EF-F95848645AFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "yapsi.Example", "yapsi.Example\yapsi.Example.csproj", "{04F90A62-6E9B-483C-8518-17AC110BA143}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "yapsi.Example", "yapsi.Example\yapsi.Example.csproj", "{04F90A62-6E9B-483C-8518-17AC110BA143}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "yapsi.HostedExample", "yapsi.HostedExample\yapsi.HostedExample.csproj", "{4C5F6375-0054-436A-A033-808F5696DF74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "yapsi.HostedExample", "yapsi.HostedExample\yapsi.HostedExample.csproj", "{4C5F6375-0054-436A-A033-808F5696DF74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "yapsi.Extensions.DependencyInjection", "yapsi.Extensions.DependencyInjection\yapsi.Extensions.DependencyInjection.csproj", "{F2D0F3C0-6B99-4885-821C-145ADE1E4ABD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{4C5F6375-0054-436A-A033-808F5696DF74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C5F6375-0054-436A-A033-808F5696DF74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C5F6375-0054-436A-A033-808F5696DF74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2D0F3C0-6B99-4885-821C-145ADE1E4ABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2D0F3C0-6B99-4885-821C-145ADE1E4ABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2D0F3C0-6B99-4885-821C-145ADE1E4ABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2D0F3C0-6B99-4885-821C-145ADE1E4ABD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
