@@ -2,16 +2,16 @@
 
 using yapsi.Default;
 
-namespace yapsi.Extensions
+namespace yapsi.Extensions.DependencyInjection
 {
     public static class IServiceCollectionExtensions
     {
-        public static IServiceCollection AddYapsi<P, T>(this IServiceCollection serviceProvider) where P : Pipeline<T>
+        public static IServiceCollection AddYapsi<T>(this IServiceCollection serviceProvider)
         {
             return serviceProvider
-                .AddSingleton<P>()
-                .AddTransient(sp => sp.GetRequiredService<P>().Subscribe())
-                .AddTransient(sp => sp.GetRequiredService<P>().Bind());
+                .AddSingleton<Pipeline<T>>()
+                .AddTransient(sp => sp.GetRequiredService<Pipeline<T>>().Subscribe())
+                .AddTransient(sp => sp.GetRequiredService<Pipeline<T>>().Bind());
         }
     }
 }
