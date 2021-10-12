@@ -15,15 +15,14 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/ricardoboss/yapsi</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageLicenseFile>..\LICENSE</PackageLicenseFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\README.md">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
+    <None Include="..\README.md" Pack="true" PackagePath="" />
+    <None Include="..\LICENSE" Pack="true" PackagePath="" />
+    <None Include="..\yapsi.snk" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>
