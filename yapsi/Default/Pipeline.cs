@@ -8,122 +8,57 @@ using System.Threading.Tasks;
 
 namespace yapsi.Default
 {
-    public class Pipeline<T> : IPipeline<T>
+    public class Pipeline<T> : IPipeline<T>, IDisposable
     {
         private readonly List<IContract<T>> contracts = new();
         private readonly List<ISubscription<T>> subscriptions = new();
 
-        private bool isContractCancelled;
-        private bool isSubscriptionCancelled;
-
-        private event IContract<T>.CancelledEventHandler? ContractCancelled;
-        private event ISubscription<T>.CancelledEventHandler? SubscriptionCancelled;
+        private bool disposedValue;
 
         public IReadOnlyCollection<IContract<T>> Contracts => contracts.AsReadOnly();
         public IReadOnlyCollection<ISubscription<T>> Subscriptions => subscriptions.AsReadOnly();
 
-        public bool IsPaused { get; private set; }
-        bool IContract<T>.IsCancelled => isContractCancelled;
-        bool ISubscription<T>.IsCancelled => isSubscriptionCancelled;
-
-        public event ISubscription<T>.PublishedEventHandler? Published;
-        public event IPausable.PausedEventHandler? Paused;
-        public event IPausable.ResumedEventHandler? Resumed;
-
-        event IContract<T>.CancelledEventHandler? IContract<T>.Cancelled
-        {
-            add
-            {
-                ContractCancelled += value;
-            }
-
-            remove
-            {
-                ContractCancelled -= value;
-            }
-        }
-
-        event ISubscription<T>.CancelledEventHandler? ISubscription<T>.Cancelled
-        {
-            add
-            {
-                SubscriptionCancelled += value;
-            }
-
-            remove
-            {
-                SubscriptionCancelled -= value;
-            }
-        }
-
-        void IContract<T>.Cancel()
-        {
-            isContractCancelled = true;
-
-            ContractCancelled?.Invoke(this);
-        }
-
-        void ISubscription<T>.Cancel()
-        {
-            isSubscriptionCancelled = true;
-
-            SubscriptionCancelled?.Invoke(this);
-        }
-
         public IContract<T> Bind()
         {
-            contracts.Add(this);
+            var contract = new Contract<T>(this);
 
-            ContractCancelled += (c) => contracts.Remove(c);
+            contracts.Add(contract);
 
-            return this;
+            contract.Cancelled += (c) => contracts.Remove(c);
+
+            return contract;
         }
 
         public ISubscription<T> Subscribe()
         {
-            subscriptions.Add(this);
+            var subscription = new Subscription<T>();
 
-            SubscriptionCancelled += (s) => subscriptions.Remove(s);
+            subscriptions.Add(subscription);
 
-            return this;
+            subscription.Cancelled += (s) => subscriptions.Remove(s);
+
+            return subscription;
         }
 
-        public void Pause()
+        protected virtual void Dispose(bool disposing)
         {
-            IsPaused = true;
+            if (disposedValue)
+                return;
 
-            Paused?.Invoke(this);
-        }
-
-        public void Resume()
-        {
-            IsPaused = false;
-
-            Resumed?.Invoke(this);
-        }
-
-        void IContract<T>.Publish(T packet)
-        {
-            if (isContractCancelled)
-                throw new OperationCanceledException("Cannot publish packets on a cancelled contract!");
-
-            var activeSubscriptions = subscriptions.Where(s => !s.IsPaused).ToList();
-            for (var i = 0; i < activeSubscriptions.Count; i++)
+            if (disposing)
             {
-                var subscriber = activeSubscriptions[i];
-                if (subscriber.IsCancelled)
-                    subscriptions.Remove(subscriber);
-                else
-                    subscriber.Publish(packet);
+                contracts.ToList().ForEach(c => c.Dispose());
+                subscriptions.ToList().ForEach(s => s.Dispose());
             }
+
+            disposedValue = true;
         }
 
-        void ISubscription<T>.Publish(T packet)
+        public void Dispose()
         {
-            if (isSubscriptionCancelled)
-                throw new OperationCanceledException("Cannot broadcast packets on a cancelled subscription!");
-
-            Published?.Invoke(this, packet);
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

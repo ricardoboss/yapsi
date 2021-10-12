@@ -6,19 +6,11 @@ using System.Threading.Tasks;
 
 namespace yapsi
 {
-    public interface ISubscription<T> : IPausable
+    public interface ISubscription<T> : IPausable, ICancelable<ISubscription<T>>, IDisposable
     {
-        public delegate void PublishedEventHandler(ISubscription<T> sender, T packet);
-
-        public delegate void CancelledEventHandler(ISubscription<T> sender);
+        delegate void PublishedEventHandler(ISubscription<T> sender, T packet);
 
         event PublishedEventHandler? Published;
-
-        event CancelledEventHandler? Cancelled;
-
-        bool IsCancelled { get; }
-
-        void Cancel();
 
         internal void Publish(T packet);
     }

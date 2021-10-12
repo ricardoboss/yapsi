@@ -12,7 +12,7 @@ namespace yapsi.Test
         [TestMethod]
         public void TestSimplePubSub()
         {
-            var pipeline = new Pipeline<int>();
+            using var pipeline = new Pipeline<int>();
 
             Assert.AreEqual(0, pipeline.Subscriptions.Count);
             Assert.AreEqual(0, pipeline.Contracts.Count);
@@ -41,7 +41,7 @@ namespace yapsi.Test
         [TestMethod]
         public void TestMultiplePubSub()
         {
-            var pipeline = new Pipeline<int>();
+            using var pipeline = new Pipeline<int>();
 
             Assert.AreEqual(0, pipeline.Subscriptions.Count);
             Assert.AreEqual(0, pipeline.Contracts.Count);
@@ -75,7 +75,7 @@ namespace yapsi.Test
         [TestMethod]
         public void TestBinding()
         {
-            var pipeline = new Pipeline<int>();
+            using var pipeline = new Pipeline<int>();
 
             Assert.AreEqual(0, pipeline.Subscriptions.Count);
             Assert.AreEqual(0, pipeline.Contracts.Count);
@@ -89,7 +89,7 @@ namespace yapsi.Test
         [TestMethod]
         public void TestCancelContract()
         {
-            var pipeline = new Pipeline<int>();
+            using var pipeline = new Pipeline<int>();
             var contract = pipeline.Bind();
 
             Assert.IsFalse(contract.IsCancelled);
@@ -109,7 +109,7 @@ namespace yapsi.Test
         [TestMethod]
         public void TestCancelSubscription()
         {
-            var pipeline = new Pipeline<int>();
+            using var pipeline = new Pipeline<int>();
             var contract = pipeline.Bind();
 
             Assert.AreEqual(0, pipeline.Subscriptions.Count);
@@ -135,7 +135,7 @@ namespace yapsi.Test
         [TestMethod]
         public void TestPauseResumeSubscription()
         {
-            var pipeline = new Pipeline<int>();
+            using var pipeline = new Pipeline<int>();
             var contract = pipeline.Bind();
 
             Assert.AreEqual(0, pipeline.Subscriptions.Count);
@@ -170,6 +170,31 @@ namespace yapsi.Test
 
             contract.Publish(8);
             Assert.AreEqual(8, data);
+        }
+
+        [TestMethod]
+        public void TestDisposed()
+        {
+            var pipeline = new Pipeline<int>();
+            var subscription = pipeline.Subscribe();
+            int? data = null;
+            subscription.Published += (sender, d) => data = d;
+
+            using (var contract = pipeline.Bind())
+            {
+                contract.Publish(8);
+            }
+
+            Assert.AreEqual(0, pipeline.Contracts.Count);
+            Assert.AreEqual(8, data);
+
+            using (var contract = pipeline.Bind())
+            {
+                contract.Publish(5);
+            }
+
+            Assert.AreEqual(0, pipeline.Contracts.Count);
+            Assert.AreEqual(5, data);
         }
     }
 }

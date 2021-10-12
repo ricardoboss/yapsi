@@ -1,6 +1,6 @@
 ﻿namespace yapsi
 {
-    public interface IPipeline<T> : IContract<T>, ISubscription<T>
+    public interface IPipeline<T>
     {
         IReadOnlyCollection<IContract<T>> Contracts { get; }
 

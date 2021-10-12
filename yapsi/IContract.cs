@@ -6,15 +6,9 @@ using System.Threading.Tasks;
 
 namespace yapsi
 {
-    public interface IContract<T>
+    public interface IContract<T> : ICancelable<IContract<T>>, IDisposable
     {
-        public delegate void CancelledEventHandler(IContract<T> sender);
-
-        event CancelledEventHandler? Cancelled;
-
-        bool IsCancelled { get; }
-
-        void Cancel();
+        IPipeline<T> Pipeline { get; }
 
         void Publish(T packet);
     }
