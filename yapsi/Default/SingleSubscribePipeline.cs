@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace yapsi.Default
 {
-    public class Pipeline<T> : IPolyPipeline<T>, IDisposable
+    public class SingleSubscribePipeline<T> : IPipeline<T>, ISingleSubscribePipeline<T>, IDisposable
     {
         private readonly List<IContract<T>> contracts = new();
-        private readonly List<ISubscription<T>> subscriptions = new();
+        private ISubscription<T>? subscription = null;
 
         private bool disposedValue;
 
         public IReadOnlyCollection<IContract<T>> Contracts => contracts.AsReadOnly();
-        public IReadOnlyCollection<ISubscription<T>> Subscriptions => subscriptions.AsReadOnly();
+        public ISubscription<T>? Subscription => subscription;
 
         public IContract<T> Bind()
         {
@@ -31,11 +31,12 @@ namespace yapsi.Default
 
         public ISubscription<T> Subscribe()
         {
-            var subscription = new Subscription<T>();
+            if (subscription is not null)
+                throw new InvalidOperationException("Single subscription was already emitted. Cancel the previous subscription to create a new one.");
 
-            subscriptions.Add(subscription);
+            subscription = new Subscription<T>();
 
-            subscription.Cancelled += (s) => subscriptions.Remove(s);
+            subscription.Cancelled += (s) => subscription = null;
 
             return subscription;
         }
@@ -48,7 +49,7 @@ namespace yapsi.Default
             if (disposing)
             {
                 contracts.ToList().ForEach(c => c.Dispose());
-                subscriptions.ToList().ForEach(s => s.Dispose());
+                subscription?.Dispose();
             }
 
             disposedValue = true;

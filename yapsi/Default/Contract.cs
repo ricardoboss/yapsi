@@ -32,7 +32,17 @@ namespace yapsi.Default
             if (IsCancelled)
                 throw new OperationCanceledException("Cannot publish packets on a cancelled contract!");
 
-            foreach (var subscription in Pipeline.Subscriptions.Where(s => !s.IsPaused && !s.IsCancelled))
+            IEnumerable<ISubscription<T>> subscriptions;
+            if (Pipeline is IPolyPipeline<T> polyPipeline)
+                subscriptions = polyPipeline.Subscriptions.Where(s => !s.IsPaused && !s.IsCancelled);
+            else if (Pipeline is ISingleBindPipeline<T> singleBindPipeline)
+                subscriptions = singleBindPipeline.Subscriptions.Where(s => !s.IsPaused && !s.IsCancelled);
+            else if (Pipeline is ISingleSubscribePipeline<T> singleSubscribePipeline)
+                subscriptions = singleSubscribePipeline.Subscription is not null ? new[] { singleSubscribePipeline.Subscription } : Array.Empty<ISubscription<T>>();
+            else
+                throw new NotImplementedException("Pipeline type could not be determined. Please override yapsi.Default.Contract.Publish(...) to implement your custom pipeline.");
+
+            foreach (var subscription in subscriptions)
                 subscription.Publish(packet);
         }
 

@@ -196,5 +196,25 @@ namespace yapsi.Test
             Assert.AreEqual(0, pipeline.Contracts.Count);
             Assert.AreEqual(5, data);
         }
+
+        [TestMethod]
+        public void TestSingleBind()
+        {
+            using var pipeline = new SingleBindPipeline<int>();
+
+            _ = pipeline.Bind();
+
+            Assert.ThrowsException<InvalidOperationException>(() => pipeline.Bind());
+        }
+
+        [TestMethod]
+        public void TestSingleSubscription()
+        {
+            using var pipeline = new SingleSubscribePipeline<int>();
+
+            _ = pipeline.Subscribe();
+
+            Assert.ThrowsException<InvalidOperationException>(() => pipeline.Subscribe());
+        }
     }
 }

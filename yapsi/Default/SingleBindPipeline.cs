@@ -8,23 +8,24 @@ using System.Threading.Tasks;
 
 namespace yapsi.Default
 {
-    public class Pipeline<T> : IPolyPipeline<T>, IDisposable
+    public class SingleBindPipeline<T> : IPipeline<T>, ISingleBindPipeline<T>, IDisposable
     {
-        private readonly List<IContract<T>> contracts = new();
+        private IContract<T>? contract;
         private readonly List<ISubscription<T>> subscriptions = new();
 
         private bool disposedValue;
 
-        public IReadOnlyCollection<IContract<T>> Contracts => contracts.AsReadOnly();
+        public IContract<T>? Contract => contract;
         public IReadOnlyCollection<ISubscription<T>> Subscriptions => subscriptions.AsReadOnly();
 
         public IContract<T> Bind()
         {
-            var contract = new Contract<T>(this);
+            if (contract is not null)
+                throw new InvalidOperationException("Single bind contract was already emitted. Cancel the previous contract to create a new one.");
 
-            contracts.Add(contract);
+            contract = new Contract<T>(this);
 
-            contract.Cancelled += (c) => contracts.Remove(c);
+            contract.Cancelled += (c) => contract = null;
 
             return contract;
         }
@@ -47,7 +48,7 @@ namespace yapsi.Default
 
             if (disposing)
             {
-                contracts.ToList().ForEach(c => c.Dispose());
+                contract?.Dispose();
                 subscriptions.ToList().ForEach(s => s.Dispose());
             }
 
