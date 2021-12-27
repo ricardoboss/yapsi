@@ -4,7 +4,7 @@ using yapsi.Default;
 
 namespace yapsi.Extensions.DependencyInjection
 {
-    public static class IServiceCollectionExtensions
+    public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddYapsi<T>(this IServiceCollection serviceProvider)
         {
