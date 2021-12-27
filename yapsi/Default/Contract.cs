@@ -38,7 +38,7 @@ namespace yapsi.Default
             else if (Pipeline is ISingleBindPipeline<T> singleBindPipeline)
                 subscriptions = singleBindPipeline.Subscriptions.Where(s => !s.IsPaused && !s.IsCancelled);
             else if (Pipeline is ISingleSubscribePipeline<T> singleSubscribePipeline)
-                subscriptions = singleSubscribePipeline.Subscription is not null ? new[] { singleSubscribePipeline.Subscription } : Array.Empty<ISubscription<T>>();
+                subscriptions = singleSubscribePipeline.Subscription is not null ? new[] { singleSubscribePipeline.Subscription } : Enumerable.Empty<ISubscription<T>>();
             else
                 throw new NotImplementedException("Pipeline type could not be determined. Please override yapsi.Default.Contract.Publish(...) to implement your custom pipeline.");
 
